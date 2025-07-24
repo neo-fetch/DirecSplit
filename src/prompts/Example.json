@@ -1,0 +1,34 @@
+{
+  "timeline": {
+    "tracks": [
+      {
+        "clips": [
+          {
+            "asset": {
+              "type": "video",
+              "src": "https://example.com/video.mp4",
+              "trim": {
+                "start": 5.0,
+                "end": 10.0
+              }
+            },
+            "start": 0.0,
+            "length": 5.0
+          },
+          {
+            "asset": {
+              "type": "video",
+              "src": "https://example.com/video.mp4",
+              "trim": {
+                "start": 20.0,
+                "end": 25.0
+              }
+            },
+            "start": 5.0,
+            "length": 5.0
+          }
+        ]
+      }
+    ]
+  }
+}
