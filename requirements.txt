@@ -1,0 +1,3 @@
+google-generativeai
+shotstack-sdk
+python-dotenv
