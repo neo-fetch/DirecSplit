@@ -97,7 +97,7 @@ export default function Home() {
               />
               <label htmlFor="terms">I accept the terms and conditions.</label>
             </div>
-            <button type="submit" disabled={isLoading || !termsAccepted}>
+            <button type="submit" disabled={isLoading || !termsAccepted} className={styles.button}>
               {isLoading ? 'Processing...' : 'Submit'}
             </button>
           </form>
@@ -116,11 +116,11 @@ export default function Home() {
           <div className={styles.result_section}>
             <h2>Your Video is Ready!</h2>
             <div className={styles.video_container}>
-              <video controls src={result.edited_video_url}></video>
+              <video className={styles.video} controls src={result.edited_video_url}></video>
             </div>
             <div className={styles.directions}>
               <h3>Editing Directions</h3>
-              <pre>{JSON.stringify(result.directions, null, 2)}</pre>
+              <pre className={styles.pre}>{JSON.stringify(result.directions, null, 2)}</pre>
             </div>
           </div>
         )}
