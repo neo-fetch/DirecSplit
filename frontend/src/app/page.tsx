@@ -1,20 +1,42 @@
-import React, { useState } from 'react';
+'use client';
+
+import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import axios from 'axios';
-import './App.css';
+import styles from './page.module.css';
 
-function App() {
-  const [video, setVideo] = useState(null);
-  const [context, setContext] = useState('');
-  const [termsAccepted, setTermsAccepted] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [result, setResult] = useState(null);
-  const [error, setError] = useState(null);
+interface Result {
+  edited_video_url: string;
+  directions: any;
+}
 
-  const handleVideoChange = (e) => {
-    setVideo(e.target.files[0]);
+export default function Home() {
+  const [video, setVideo] = useState<File | null>(null);
+  const [context, setContext] = useState<string>('');
+  const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [result, setResult] = useState<Result | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedResult = localStorage.getItem('processedResult');
+    if (storedResult) {
+      setResult(JSON.parse(storedResult));
+    }
+  }, []);
+
+  const handleVideoChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const file = e.target.files[0];
+      setVideo(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        localStorage.setItem('rawVideo', reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!video || !termsAccepted) {
       setError('Please select a video and accept the terms and conditions.');
@@ -36,6 +58,7 @@ function App() {
         },
       });
       setResult(response.data);
+      localStorage.setItem('processedResult', JSON.stringify(response.data));
     } catch (err) {
       setError('An error occurred while processing the video.');
       console.error(err);
@@ -45,26 +68,26 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className={styles.App}>
+      <header className={styles.App_header}>
         <h1>DirecSplit</h1>
       </header>
       <main>
-        <div className="upload-section">
+        <div className={styles.upload_section}>
           <h2>Upload Your Video</h2>
           <p>Split your video into meaningful chunks.</p>
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
+            <div className={styles.form_group}>
               <input type="file" onChange={handleVideoChange} accept="video/*" />
             </div>
-            <div className="form-group">
+            <div className={styles.form_group}>
               <textarea
                 placeholder="Add any additional context here..."
                 value={context}
                 onChange={(e) => setContext(e.target.value)}
               ></textarea>
             </div>
-            <div className="form-group terms">
+            <div className={`${styles.form_group} ${styles.terms}`}>
               <input
                 type="checkbox"
                 id="terms"
@@ -79,22 +102,22 @@ function App() {
           </form>
         </div>
 
-        {error && <div className="error">{error}</div>}
+        {error && <div className={styles.error}>{error}</div>}
 
         {isLoading && (
-          <div className="loading">
+          <div className={styles.loading}>
             <p>Analyzing and editing your video... This may take a moment.</p>
-            <div className="spinner"></div>
+            <div className={styles.spinner}></div>
           </div>
         )}
 
         {result && (
-          <div className="result-section">
+          <div className={styles.result_section}>
             <h2>Your Video is Ready!</h2>
-            <div className="video-container">
+            <div className={styles.video_container}>
               <video controls src={result.edited_video_url}></video>
             </div>
-            <div className="directions">
+            <div className={styles.directions}>
               <h3>Editing Directions</h3>
               <pre>{JSON.stringify(result.directions, null, 2)}</pre>
             </div>
@@ -104,5 +127,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
