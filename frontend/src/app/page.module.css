@@ -18,7 +18,7 @@
   letter-spacing: -1.5px;
 }
 
-main {
+.main {
   max-width: 600px;
   width: 100%;
   display: flex;

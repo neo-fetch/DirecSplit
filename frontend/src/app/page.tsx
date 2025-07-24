@@ -72,7 +72,7 @@ export default function Home() {
       <header className={styles.App_header}>
         <h1>DirecSplit</h1>
       </header>
-      <main>
+      <main className={styles.main}>
         <div className={styles.upload_section}>
           <h2>Upload Your Video</h2>
           <p>Split your video into meaningful chunks.</p>
