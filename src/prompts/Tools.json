@@ -1,0 +1,16 @@
+[
+  {
+    "name": "shotstack_edit",
+    "description": "Edits a video using the Shotstack API.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "timeline": {
+          "type": "object",
+          "description": "A Shotstack timeline object. See https://shotstack.io/docs/guide/making-edits/timeline/ for more information."
+        }
+      },
+      "required": ["timeline"]
+    }
+  }
+]
