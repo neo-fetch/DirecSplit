@@ -16,11 +16,12 @@ def analyze_video(video_path, user_context):
         # Configure the generative AI model
         genai.configure(api_key=os.environ["GEMINI_API_KEY"])
         model = genai.GenerativeModel('gemini-1.5-flash',
-                                      system_instruction=open("src/prompts/Prompt.txt").read())
+                                      system_instruction=open(os.path.join(os.path.dirname(__file__), 'prompts/Prompt.txt')).read())
 
-        # Prepare the prompt for the model
         # In a real application, you would upload the video to a storage service
         # and provide the URL to the model. For this example, we'll use a placeholder.
+        # For the purpose of this refactor, we'll continue to use the placeholder video.
+        # In a future step, we can implement video uploading to a service.
         video_url = "https://shotstack-assets.s3.ap-southeast-2.amazonaws.com/footage/skater.hd.mp4"
         prompt = f"Analyze the video at {video_url} and generate editing directions. User context: {user_context}"
 
@@ -61,36 +62,12 @@ def edit_video(shotstack_json):
                     break
                 elif status == "failed":
                     raise Exception("Video rendering failed.")
+                # Add a sleep to avoid busy-waiting
+                import time
+                time.sleep(2)
+
 
             return api_instance.get_render(render.response.id).response.url
     except Exception as e:
         print(f"Error editing video: {e}")
         return None
-
-
-def main():
-    """
-    Main function to run the DirecSplit application.
-    """
-    load_dotenv()
-    # Get user input
-    video_path = input("Enter the path to the video file: ")
-    user_context = input("Enter any additional context: ")
-
-    # Analyze the video
-    shotstack_json = analyze_video(video_path, user_context)
-
-    if shotstack_json:
-        # Edit the video
-        edited_video_url = edit_video(shotstack_json)
-
-        if edited_video_url:
-            # Print the results
-            print("Video editing complete!")
-            print(f"Edited video URL: {edited_video_url}")
-            print("Editing directions:")
-            print(json.dumps(shotstack_json, indent=2))
-
-
-if __name__ == "__main__":
-    main()
