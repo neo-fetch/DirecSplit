@@ -1,34 +1,58 @@
 # DirecSplit
 
-DirecSplit is a video editing tool that uses Gemini to analyze a video and generate editing directions. It then uses the Shotstack API to automatically edit the video based on these directions.
+DirecSplit is a web application that uses AI to split your videos into meaningful chunks. It's built with a Flask backend and a React frontend.
 
-## Setup
+## How to Run
 
-1.  **Clone the repository:**
+### Prerequisites
+
+- Python 3
+- Node.js and npm
+
+### 1. Backend Setup
+
+1.  Navigate to the `backend` directory:
     ```bash
-    git clone https://github.com/your-username/direcsplit.git
-    cd direcsplit
+    cd backend
     ```
-
-2.  **Install the dependencies:**
+2.  Install the Python dependencies:
     ```bash
-    pip install -r requirements.txt
+    pip install -r ../requirements.txt
     ```
-
-3.  **Create a `.env` file by copying the example:**
+3.  Set up your environment variables by creating a `.flaskenv` file in the root directory and adding your API keys:
+    ```
+    FLASK_APP=backend/app.py
+    FLASK_ENV=development
+    GEMINI_API_KEY="YOUR_GEMINI_API_KEY"
+    SHOTSTACK_API_KEY="YOUR_SHOTSTACK_API_KEY"
+    ```
+4.  Start the Flask server:
     ```bash
-    cp .env .env.example
+    flask run
     ```
+    The backend will be running at `http://localhost:5000`.
 
-4.  **Add your API keys to the `.env` file:**
-    -   `GEMINI_API_KEY`: Your API key for the Gemini API.
-    -   `SHOTSTACK_API_KEY`: Your API key for the Shotstack API.
+### 2. Frontend Setup
 
-## Usage
+1.  Open a new terminal and navigate to the `frontend` directory:
+    ```bash
+    cd frontend
+    ```
+2.  Install the Node.js dependencies:
+    ```bash
+    npm install
+    ```
+3.  Start the React development server:
+    ```bash
+    npm start
+    ```
+    The frontend will be running at `http://localhost:3000`.
 
-To run the application, use the following command:
-```bash
-python src/direcsplit.py
-```
+### 3. Usage
 
-The application will prompt you to enter the path to the video file and any additional context. It will then analyze the video, generate editing directions, and output the URL of the edited video.
+1.  Open your browser and go to `http://localhost:3000`.
+2.  Upload a video file.
+3.  Add any additional context in the text box.
+4.  Accept the terms and conditions.
+5.  Click "Submit" and wait for the video to be processed.
+6.  Once complete, you will see the edited video and the editing directions.
