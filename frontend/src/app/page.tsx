@@ -78,13 +78,14 @@ export default function Home() {
           <p>Split your video into meaningful chunks.</p>
           <form onSubmit={handleSubmit}>
             <div className={styles.form_group}>
-              <input type="file" onChange={handleVideoChange} accept="video/*" />
+              <input type="file" onChange={handleVideoChange} accept="video/*" className={styles.file_input} />
             </div>
             <div className={styles.form_group}>
               <textarea
                 placeholder="Add any additional context here..."
                 value={context}
                 onChange={(e) => setContext(e.target.value)}
+                className={styles.textarea}
               ></textarea>
             </div>
             <div className={`${styles.form_group} ${styles.terms}`}>
